@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import app from '../../db/db'
-import { getAuth, createUserWithEmailAndPassword} from 'firebase/auth'
+import { getAuth, signInWithEmailAndPassword} from 'firebase/auth'
 import { Box, Input, Text, Link } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { doc, setDoc, getFirestore } from "firebase/firestore"; 
@@ -17,22 +17,17 @@ export default function Signin() {
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        createUserWithEmailAndPassword(auth, email, password)
+        signInWithEmailAndPassword(auth, email, password)
             .then(async (userCredential) => {
                 const user = userCredential.user;
-
-                await setDoc(doc(db, "users", userCredential.user.uid), {
-                    id: userCredential.user.uid,
-                    username: name,
-
-                });
+            router.push('/teste')
+                
             })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
                 console.log(errorCode, errorMessage)
 
-                // ..
             });
     }
 
