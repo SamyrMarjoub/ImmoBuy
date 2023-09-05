@@ -2,6 +2,8 @@ import 'leaflet/dist/leaflet.css'
 import { MapContainer, TileLayer } from 'react-leaflet'
 import style from '../../styles/Home.module.css'
 // import React, { useState, useEffect } from 'react'
+// import "leaflet-control-geocoder/dist/Control.Geocoder.css";
+// import "leaflet-control-geocoder/dist/Control.Geocoder.js";
 
 function Map({latitude, longitude}) {
     return (
