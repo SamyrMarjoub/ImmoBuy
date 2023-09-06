@@ -7,7 +7,7 @@ import style from '../../styles/Home.module.css'
 
 function Map({latitude, longitude}) {
     return (
-        <MapContainer className={style.map} center={[latitude, longitude]} zoom={13} scrollWheelZoom={true}>
+        <MapContainer className={style.map} center={[latitude, longitude]} zoom={16} scrollWheelZoom={true}>
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
