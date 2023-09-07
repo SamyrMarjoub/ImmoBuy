@@ -8,6 +8,8 @@ import Link from 'next/link';
 import axios from 'axios'
 import Sidebar from '../components/map/main/Sidebar';
 import Header from '../components/map/Header';
+import InitModal from '../components/map/main/InitModal';
+
 export default function main() {
 
     const [latitude, setLatitude] = useState(null);
@@ -117,10 +119,10 @@ export default function main() {
 
                 {latitude !== null && longitude !== null ? <Box w='100%' height={'100%'}>
                     <Header />
-
+                    {/* <InitModal/> */}
                     <Box display={'flex'} overflow={'hidden'} flex={'1'} h={'calc(100% - 60px)'}>
                         <Sidebar />
-                        <Box w={'calc(100% - 300px)'}>
+                        <Box w={'calc(100% - 250px)'}>
                             <Map latitude={latitude} longitude={longitude} />
                         </Box>
                     </Box>
