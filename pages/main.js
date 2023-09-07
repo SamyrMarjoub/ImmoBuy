@@ -9,7 +9,7 @@ import axios from 'axios'
 import Sidebar from '../components/map/main/Sidebar';
 import Header from '../components/map/Header';
 import InitModal from '../components/map/main/InitModal';
-
+import { useGlobalState, setGlobalState } from '../global/globalState';
 export default function main() {
 
     const [latitude, setLatitude] = useState(null);
@@ -18,6 +18,7 @@ export default function main() {
     const [isAuthenticated, setIsAuthenticated] = useState(null)
     const [endLat, setEndLat] = useState(null)
     const [endlong, setEndLong] = useState(null)
+    const [isModalOpen, setIsModalOpen] = useGlobalState('isModalOpen');
 
 
     function getlocalEnd() {
@@ -119,6 +120,7 @@ export default function main() {
 
                 {latitude !== null && longitude !== null ? <Box w='100%' height={'100%'}>
                     <Header />
+                    {isModalOpen ? <InitModal/> : <></>}
                     {/* <InitModal/> */}
                     <Box display={'flex'} overflow={'hidden'} flex={'1'} h={'calc(100% - 60px)'}>
                         <Sidebar />
