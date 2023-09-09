@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Box, Text, Button, Grid, Flex, calc } from '@chakra-ui/react'
 import { onAuthStateChanged, getAuth, signOut } from 'firebase/auth'
 import app from '../db/db'
-import { collection, doc, getDoc, getFirestore } from "firebase/firestore";
+import { collection, doc, getDoc, getFirestore, getDocs } from "firebase/firestore";
 import Map from '../components/map';
 import Link from 'next/link';
 import axios from 'axios'
@@ -19,42 +19,10 @@ export default function main() {
     const [endLat, setEndLat] = useState(null)
     const [endlong, setEndLong] = useState(null)
     const [isModalOpen, setIsModalOpen] = useGlobalState('isModalOpen');
+    const [imovelData, setImovelData] = useState([])
 
 
-    function getlocalEnd() {
-        const API_KEY = '0393eac023cd425cacf748b902467427';
-        const end = 'Rua Borboletas Psicodélicas '
-        const url = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(end)}&key=${API_KEY}`;
 
-        axios.get(url)
-            .then(response => {
-                // Verifique se a resposta foi bem-sucedida
-                if (response.status === 200) {
-                    // Parseie a resposta JSON
-                    const data = response.data;
-
-                    // Verifique se a resposta possui resultados
-                    if (data.results && data.results.length > 0) {
-                        // Obtenha as coordenadas geográficas (latitude e longitude)
-                        const latitude = data.results[0].geometry.lat;
-                        const longitude = data.results[0].geometry.lng;
-                        setEndLong(longitude)
-                        setEndLat(latitude)
-                        // Exiba as coordenadas
-                        console.log(`Latitude: ${latitude}`);
-                        console.log(`Longitude: ${longitude}`);
-                    } else {
-                        console.log('Nenhum resultado encontrado.');
-                    }
-                } else {
-                    console.log('Erro na solicitação.');
-                }
-            })
-            .catch(error => {
-                console.error('Erro na solicitação:', error);
-            });
-
-    }
     function isLogged() {
         const auth = getAuth(app);
         const db = getFirestore(app);
@@ -105,11 +73,26 @@ export default function main() {
             setError("Geolocalização não está disponível no seu navegador.");
         }
     }
+    async function getImoveis() {
+        const imovelDataArray = []; // Array para armazenar os documentos
+        const db = getFirestore(app);
+        const querySnapshot = await getDocs(collection(db, "imoveis"));
+        querySnapshot.forEach((doc) => {
+            // doc.data() é um único documento
+            const documento = doc.data();
+            imovelDataArray.push(documento); // Adicione o documento ao array
+            // console.log(documento);
+        });
+        
+        // Após o loop, defina imovelData com o array completo
+        setImovelData(imovelDataArray);
+        
+    }
 
     useEffect(() => {
         // getlocalEnd()
         isLogged()
-
+        getImoveis()
     }, [])
 
 
@@ -120,12 +103,12 @@ export default function main() {
 
                 {latitude !== null && longitude !== null ? <Box w='100%' height={'100%'}>
                     <Header />
-                    {isModalOpen ? <InitModal/> : <></>}
+                    {isModalOpen ? <InitModal /> : <></>}
                     {/* <InitModal/> */}
                     <Box display={'flex'} overflow={'hidden'} flex={'1'} h={'calc(100% - 60px)'}>
                         <Sidebar />
                         <Box w={'calc(100% - 250px)'}>
-                            <Map latitude={latitude} longitude={longitude} />
+                            <Map datas={imovelData} latitude={latitude} longitude={longitude} />
                         </Box>
                     </Box>
 
