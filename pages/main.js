@@ -3,13 +3,14 @@ import { Box, Text, Button, Grid, Flex, calc } from '@chakra-ui/react'
 import { onAuthStateChanged, getAuth, signOut } from 'firebase/auth'
 import app from '../db/db'
 import { collection, doc, getDoc, getFirestore, getDocs } from "firebase/firestore";
-import Map from '../components/map';
+// import Map from '../components/map/map';
 import Link from 'next/link';
 import axios from 'axios'
 import Sidebar from '../components/map/main/Sidebar';
 import Header from '../components/map/Header';
 import InitModal from '../components/map/main/InitModal';
 import { useGlobalState, setGlobalState } from '../global/globalState';
+import Map from '../components/map/map.tsx';
 export default function main() {
 
     const [latitude, setLatitude] = useState(null);
@@ -106,8 +107,8 @@ export default function main() {
                     {isModalOpen ? <InitModal /> : <></>}
                     {/* <InitModal/> */}
                     <Box display={'flex'} overflow={'hidden'} flex={'1'} h={'calc(100% - 60px)'}>
-                        <Sidebar />
-                        <Box w={'calc(100% - 250px)'}>
+                        {/* <Sidebar /> */}
+                        <Box w={'100%'}>
                             <Map datas={imovelData} latitude={latitude} longitude={longitude} />
                         </Box>
                     </Box>
